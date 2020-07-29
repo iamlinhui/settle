@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>月供计算公式</title>
+    <meta name="Description" content="可高度定制的计算步骤的 还款计划计算解析器"/>
+    <meta name="Keywords" content="等额本息 等额本金"/>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.css" rel="stylesheet"/>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.js"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/theme/default/layer.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="main container">
+    <div class="title">
+        <h4>月供计算公式</h4>
+    </div>
+    <hr/>
+    <div class="content input-group">
+        <div class="form-group">
+            <label for="yr">年化利率：</label>
+            <input class="form-control" id="yr" v-model="baseInfo.rateInfoRule.yearRateRule"/>
+        </div>
+        <div class="form-group">
+            <label for="pd">放款日期：</label>
+            <input class="form-control" id="pd" v-model="payOrder.paymentTime"/>
+        </div>
+        <div class="form-group">
+            <label for="la">借款金额(元)：</label>
+            <input class="form-control" id="la" v-model="payOrder.loanAmount"/>
+        </div>
+        <div class="form-group">
+            <label for="lm">借款期数：</label>
+            <input class="form-control" id="lm" v-model="payOrder.loanTerm"/>
+        </div>
+        <div class="form-group">
+            <label for="bdn">账单日：</label>
+            <input class="form-control" id="bdn" v-model="payOrder.fixedBillDay"/>
+        </div>
+        <div class="form-group">
+            <label for="rdn">还款日：</label>
+            <input class="form-control" id="rdn" v-model="payOrder.fixedRepayDay"/>
+        </div>
+        <div class="form-group">
+            <label for="choose">还款方式：</label>
+            <select class="custom-select" id="choose" v-model="choose">
+                <option v-bind:value="1">等额本息</option>
+                <option v-bind:value="2">等额本金</option>
+            </select>
+        </div>
+        <a class="btn btn-light btn-block" v-on:click="settle">生成还款计划</a>
+    </div>
+    <hr/>
+    <table v-if="show" border="1" cellspacing="0" cellpadding="0">
+        <thead>
+        <th>年利率</th>
+        <th>期数</th>
+        <th>当期本金(元)</th>
+        <th>当期利息(元)</th>
+        <th>当期总额(元)</th>
+        <th>当期未还本金(元)</th>
+        <th>当期应还款日</th>
+        </thead>
+        <tbody v-for="item in result" v-bind:key="item">
+        <td>{{item.repayRate}}</td>
+        <td>{{item.repayTerm}}</td>
+        <td>{{item.repayPrincipal}}</td>
+        <td>{{item.repayFee}}</td>
+        <td>{{item.repayTotal}}</td>
+        <td>{{item.notRepayPrincipal}}</td>
+        <td>{{item.repayDate}}</td>
+        </tbody>
+    </table>
+</div>
+</body>
+<link rel="stylesheet" th:href="@{/settle.css}">
+<script type="text/javascript" th:src="@{/settle.js}"></SCRIPT>
+</html>

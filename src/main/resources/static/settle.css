@@ -1,0 +1,51 @@
+html {
+    background: #eee;
+}
+
+.title h4 {
+    text-align: center;
+}
+
+
+.main {
+    max-width: 960px;
+    background: #fff;
+    margin: 1em auto 0;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    border: 1px solid #fff;
+    border-width: 0 2em;
+}
+
+.content p {
+    word-break: break-all;
+    text-indent: 2em;
+    line-height: 2;
+    margin: 0 0 0;
+}
+
+table {
+    width: 100%;
+    font-size: .938em;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: center;
+    vertical-align: middle;
+    padding: .5em .5em;
+    font-weight: bold;
+    background: #66677c;
+    color: #fff;
+}
+
+td {
+    text-align: center;
+    vertical-align: middle;
+    padding: .5em .5em;
+    border-bottom: solid 1px #ccc;
+}
+
+table, table tr th, table tr td {
+    border: 1px solid #000000;
+}
