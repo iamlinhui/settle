@@ -268,4 +268,24 @@ public class SpringTest extends BaseTest {
         System.out.println(CalculatorUtil.parseRule(spel, Precision.class, context));
 
     }
+
+
+    @Test
+    public void testPmt() {
+        StandardEvaluationContext context = calculateContext.newContext();
+
+        context.setVariable("YR", new SettleDecimal("0.1768")); //年华利率
+        context.setVariable("LA", new SettleDecimal("10000")); // 借款金额
+        context.setVariable("LM", new SettleDecimal("24")); // 借款期数
+
+        context.setVariable("RS", new Precision(2, RoundingMode.HALF_UP)); //结果精度
+        context.setVariable("PR", new Precision(7, RoundingMode.HALF_UP)); //过程精度
+
+        context.setVariable("MR", CalculatorUtil.parseRule("#YR.divide(12,#PR)", SettleDecimal.class, context)); // 月利率
+
+
+        String ma = "#LA.multiply(#MR).multiply(#MR.add(1).pow(#LM)).divide(#MR.add(1).pow(#LM).subtract(1),#PR).precision(#RS)";
+
+        System.out.println(CalculatorUtil.parseRule(ma, SettleDecimal.class, context));
+    }
 }

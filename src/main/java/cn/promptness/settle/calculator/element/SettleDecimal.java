@@ -269,4 +269,9 @@ public class SettleDecimal extends BigDecimal {
         }
     }
 
+
+    public SettleDecimal precision(Precision precision) {
+        return new SettleDecimal(this.setScale(precision.getScale(), precision.getRoundingMode()));
+    }
+
 }
