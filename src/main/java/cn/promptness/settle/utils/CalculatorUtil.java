@@ -89,8 +89,8 @@ public class CalculatorUtil {
         }
     }
 
-    public static <T> T parseRule(String spEl, Class<T> clazz, StandardEvaluationContext context) {
-        Expression expression = EXPRESSION_PARSER.parseExpression(spEl);
+    public static <T> T parseRule(String rule, Class<T> clazz, StandardEvaluationContext context) {
+        Expression expression = EXPRESSION_PARSER.parseExpression(rule);
         return expression.getValue(context, clazz);
     }
 
