@@ -25,7 +25,7 @@
         </div>
         <div class="form-group">
             <label for="pd">放款日期：</label>
-            <input class="form-control" id="pd" v-model="payOrder.paymentTime"/>
+            <input class="form_datetime" type="text" id="pd" v-model="payOrder.paymentTime" readonly/>
         </div>
         <div class="form-group">
             <label for="la">借款金额(元)：</label>
@@ -76,5 +76,5 @@
 </div>
 </body>
 <link rel="stylesheet" th:href="@{/settle.css}">
-<script type="text/javascript" th:src="@{/settle.js}"></SCRIPT>
+<script type="text/javascript" th:src="@{/settle.js}"></script>
 </html>
