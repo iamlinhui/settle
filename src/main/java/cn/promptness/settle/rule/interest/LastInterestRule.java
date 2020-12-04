@@ -24,7 +24,7 @@ public class LastInterestRule extends AbstractInterestRule {
     private String lastTotalAmountRule;
 
     @ContextRule(value = "NPA", desc = "未还本金", clazz = SettleDecimal.class)
-    private String notPrincipalAmountRule = "#NPA.subtract(#LPA)";
+    private String notPrincipalAmountRule = "#NPA.subtract(#LPA).max(0,#RP)";
 
 
     @ContextRule(value = "CRD", desc = "当前期还款日", clazz = Date.class)

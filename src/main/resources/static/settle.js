@@ -48,9 +48,9 @@ new Vue({
                 },
                 "middleInterestRule": {
                     "middleInterestAmountRule": "#NPA.multiply(#MR,#RP)",
-                    "middlePrincipalAmountRule": "#MA.subtract(#NPA.multiply(#MR),#RP)",
+                    "middlePrincipalAmountRule": "#NPA > 0 ? #MA.subtract(#NPA.multiply(#MR),#RP) : #NPA",
                     "middleRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#CLM.subtract(1))",
-                    "middleTotalAmountRule": "#MA",
+                    "middleTotalAmountRule": "#MPA.add(#MIA)",
                     "monthAmountRule": "#MA"
                 },
                 "lastInterestRule": {
@@ -58,8 +58,7 @@ new Vue({
                     "lastPrincipalAmountRule": "#NPA",
                     "lastRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#LM.subtract(1))",
                     "lastTotalAmountRule": "#LPA.add(#LIA)",
-                    "monthAmountRule": "#MA",
-                    "notPrincipalAmountRule": "#NPA.subtract(#LPA)"
+                    "monthAmountRule": "#MA"
                 }
             },
             baseInterestEP: {

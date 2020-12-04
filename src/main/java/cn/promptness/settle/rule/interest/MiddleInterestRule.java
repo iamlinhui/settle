@@ -24,7 +24,7 @@ public class MiddleInterestRule extends AbstractInterestRule {
     private String middleTotalAmountRule;
 
     @ContextRule(value = "NPA", desc = "未还本金", clazz = SettleDecimal.class)
-    private String notPrincipalAmountRule = "#NPA.subtract(#MPA)";
+    private String notPrincipalAmountRule = "#NPA.subtract(#MPA).max(0,#RP)";
 
 
     @ContextRule(value = "CRD", desc = "当前期还款日", clazz = Date.class)
