@@ -1,6 +1,7 @@
 ![还款计划](exp.png)
 
 ##### 基础配置信息（精度 + 利率）
+
 ```json
 {
   "precisionInfoRule": {
@@ -21,68 +22,68 @@
 ```
 
 ##### 还款计划配置信息 （等额本息）
+
 ```json
 {
-    "firstInterestRule":{
-        "firstInterestAmountRule":"#LA.multiply(#DAYS_FUNCTION(#FSD,#FRD).multiply(#DR),#RP)",
-        "firstPrincipalAmountRule":"#MA.subtract(#LA.multiply(#MR),#RP)",
-        "firstRepayDateRule":"#FRD_FUNCTION(#RDN,#BDN,#PD)",
-        "firstStartDateRule":"#PD",
-        "firstTotalAmountRule":"#FPA.add(#FIA)",
-        "monthAmountRule":"#LA.multiply(#MR).multiply(#MR.add(1).pow(#LM)).divide(#MR.add(1).pow(#LM).subtract(1),#RP)",
-        "notPrincipalAmountRule":"#LA.subtract(#FPA)"
-    },
-    "middleInterestRule":{
-        "middleInterestAmountRule":"#NPA.multiply(#MR,#RP)",
-        "middlePrincipalAmountRule":"#MA.subtract(#NPA.multiply(#MR),#RP)",
-        "middleRepayDateRule":"#MONTH_ADD_FUNCTION(#FRD,#CLM.subtract(1))",
-        "middleTotalAmountRule":"#MA",
-        "monthAmountRule":"#MA",
-        "notPrincipalAmountRule":"#NPA.subtract(#MPA)"
-    },
-    "lastInterestRule":{
-        "lastInterestAmountRule":"#NPA.multiply(#MR,#RP)",
-        "lastPrincipalAmountRule":"#NPA",
-        "lastRepayDateRule":"#MONTH_ADD_FUNCTION(#FRD,#LM.subtract(1))",
-        "lastTotalAmountRule":"#LPA.add(#LIA)",
-        "monthAmountRule":"#MA",
-        "notPrincipalAmountRule":"#NPA.subtract(#LPA)"
-    }
+  "firstInterestRule": {
+    "firstInterestAmountRule": "#LA.multiply(#DAYS_FUNCTION(#FSD,#FRD).multiply(#DR),#RP)",
+    "firstPrincipalAmountRule": "#MA.subtract(#LA.multiply(#MR),#RP)",
+    "firstRepayDateRule": "#FRD_FUNCTION(#RDN,#BDN,#PD)",
+    "firstStartDateRule": "#PD",
+    "firstTotalAmountRule": "#FPA.add(#FIA)",
+    "monthAmountRule": "#LA.multiply(#MR).multiply(#MR.add(1).pow(#LM)).divide(#MR.add(1).pow(#LM).subtract(1),#RP)"
+  },
+  "middleInterestRule": {
+    "middleInterestAmountRule": "#NPA.multiply(#MR,#RP)",
+    "middlePrincipalAmountRule": "#NPA > 0 ? #MA.subtract(#NPA.multiply(#MR),#RP) : #NPA",
+    "middleRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#CLM.subtract(1))",
+    "middleTotalAmountRule": "#MPA.add(#MIA)",
+    "monthAmountRule": "#MA"
+  },
+  "lastInterestRule": {
+    "lastInterestAmountRule": "#NPA.multiply(#MR,#RP)",
+    "lastPrincipalAmountRule": "#NPA",
+    "lastRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#LM.subtract(1))",
+    "lastTotalAmountRule": "#LPA.add(#LIA)",
+    "monthAmountRule": "#MA"
+  }
 }
 ```
 
 ##### 还款计划配置信息 （等额本金）
+
 ```json
 {
-    "firstInterestRule":{
-        "firstInterestAmountRule":"#LA.multiply(#DAYS_FUNCTION(#FSD,#FRD).multiply(#DR),#RP)",
-        "firstPrincipalAmountRule":"#MA",
-        "firstRepayDateRule":"#FRD_FUNCTION(#RDN,#BDN,#PD)",
-        "firstStartDateRule":"#PD",
-        "firstTotalAmountRule":"#FPA.add(#FIA)",
-        "monthAmountRule":"#LA.divide(#LM,#RP)",
-        "notPrincipalAmountRule":"#LA.subtract(#FPA)"
-    },
-    "middleInterestRule":{
-        "middleInterestAmountRule":"#NPA.multiply(#MR,#RP)",
-        "middlePrincipalAmountRule":"#MA",
-        "middleRepayDateRule":"#MONTH_ADD_FUNCTION(#FRD,#CLM.subtract(1))",
-        "middleTotalAmountRule":"#MPA.add(#MIA)",
-        "monthAmountRule":"#MA",
-        "notPrincipalAmountRule":"#NPA.subtract(#MPA)"
-    },
-    "lastInterestRule":{
-        "lastInterestAmountRule":"#NPA.multiply(#MR,#RP)",
-        "lastPrincipalAmountRule":"#NPA",
-        "lastRepayDateRule":"#MONTH_ADD_FUNCTION(#FRD,#LM.subtract(1))",
-        "lastTotalAmountRule":"#LPA.add(#LIA)",
-        "monthAmountRule":"#MA",
-        "notPrincipalAmountRule":"#NPA.subtract(#LPA)"
-    }
+  "firstInterestRule": {
+    "firstInterestAmountRule": "#LA.multiply(#DAYS_FUNCTION(#FSD,#FRD).multiply(#DR),#RP)",
+    "firstPrincipalAmountRule": "#MA",
+    "firstRepayDateRule": "#FRD_FUNCTION(#RDN,#BDN,#PD)",
+    "firstStartDateRule": "#PD",
+    "firstTotalAmountRule": "#FPA.add(#FIA)",
+    "monthAmountRule": "#LA.divide(#LM,#RP)",
+    "notPrincipalAmountRule": "#LA.subtract(#FPA)"
+  },
+  "middleInterestRule": {
+    "middleInterestAmountRule": "#NPA.multiply(#MR,#RP)",
+    "middlePrincipalAmountRule": "#MA",
+    "middleRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#CLM.subtract(1))",
+    "middleTotalAmountRule": "#MPA.add(#MIA)",
+    "monthAmountRule": "#MA",
+    "notPrincipalAmountRule": "#NPA.subtract(#MPA)"
+  },
+  "lastInterestRule": {
+    "lastInterestAmountRule": "#NPA.multiply(#MR,#RP)",
+    "lastPrincipalAmountRule": "#NPA",
+    "lastRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#LM.subtract(1))",
+    "lastTotalAmountRule": "#LPA.add(#LIA)",
+    "monthAmountRule": "#MA",
+    "notPrincipalAmountRule": "#NPA.subtract(#LPA)"
+  }
 }
 ```
 
 ##### 实际还款配置信息
+
 ```json
 {
   "allCompensateRule": {
