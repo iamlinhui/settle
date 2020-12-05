@@ -17,7 +17,7 @@ new Vue({
             payOrder: {
                 loanTerm: 36,
                 loanAmount: 10000,
-                paymentTime: "2020-06-11",
+                paymentTime: new Date().toISOString().split('T')[0],
                 fixedRepayDay: 14,
                 fixedBillDay: 4
             },
