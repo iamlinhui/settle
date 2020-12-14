@@ -84,6 +84,30 @@ new Vue({
                     "lastTotalAmountRule": "#LPA.add(#LIA)",
                     "monthAmountRule": "#MA"
                 }
+            },
+            baseInterestGS: {
+                "firstInterestRule": {
+                    "firstInterestAmountRule": "#LA.multiply(#YR).divide(360,@precision.init(5,'HALF_UP')).multiply(30,#RP)",
+                    "firstPrincipalAmountRule": "#MA.subtract(#FIA,#RP)",
+                    "firstRepayDateRule": "#MONTH_ADD_FUNCTION(#PD,#CLM)",
+                    "firstStartDateRule": "#PD",
+                    "firstTotalAmountRule": "#FPA.add(#FIA)",
+                    "monthAmountRule": "#LA.multiply(#MR).multiply(#MR.add(1).pow(#LM)).divide(#MR.add(1).pow(#LM).subtract(1),@precision.init(5,'HALF_UP')).precision(@precision.init(4,'HALF_UP')).precision(@precision.init(3,'HALF_UP')).precision(@precision.init(2,'HALF_UP'))"
+                },
+                "middleInterestRule": {
+                    "middleInterestAmountRule": "#NPA.multiply(#YR).divide(360,@precision.init(5,'HALF_UP')).multiply(30,#RP)",
+                    "middlePrincipalAmountRule": "#NPA > 0 ? #MA.subtract(#MIA,#RP) : #NPA",
+                    "middleRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#CLM.subtract(1))",
+                    "middleTotalAmountRule": "#MPA.add(#MIA)",
+                    "monthAmountRule": "#MA"
+                },
+                "lastInterestRule": {
+                    "lastInterestAmountRule": "#NPA.multiply(#YR).divide(360,@precision.init(5,'HALF_UP')).multiply(30,#RP)",
+                    "lastPrincipalAmountRule": "#NPA",
+                    "lastRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#LM.subtract(1))",
+                    "lastTotalAmountRule": "#LPA.add(#LIA)",
+                    "monthAmountRule": "#MA"
+                }
             }
         }
     },
@@ -126,7 +150,7 @@ new Vue({
                 payOrder: this.payOrder,
                 rule: {
                     baseInfoRule: this.baseInfo,
-                    baseInterestRule: this.choose === 1 ? this.baseInterestEI : this.baseInterestEP
+                    baseInterestRule: this.choose === 1 ? this.baseInterestEI : this.choose === 2 ? this.baseInterestEP : this.baseInterestGS
                 }
             }).then((response) => {
                 this.result = response.data

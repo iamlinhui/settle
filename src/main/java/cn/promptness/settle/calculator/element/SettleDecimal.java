@@ -104,7 +104,7 @@ public class SettleDecimal extends BigDecimal {
     }
 
     public SettleDecimal multiply(Integer multiplicand, Precision precision) {
-        return new SettleDecimal(super.multiply(new BigDecimal(multiplicand.toString()).setScale(precision.getScale(), precision.getRoundingMode())));
+        return new SettleDecimal(super.multiply(new BigDecimal(multiplicand.toString())).setScale(precision.getScale(), precision.getRoundingMode()));
     }
 
     public SettleDecimal multiply(Integer multiplicand) {
