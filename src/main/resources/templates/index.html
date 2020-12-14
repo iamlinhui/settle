@@ -11,6 +11,7 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.js"></script>
     <link href="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/theme/default/layer.css" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/settle.css}">
 </head>
 <body>
 <div class="main container">
@@ -54,28 +55,29 @@
         <a class="btn btn-light btn-block" v-on:click="settle">生成还款计划</a>
     </div>
     <hr/>
-    <table v-if="show" border="1" cellspacing="0" cellpadding="0">
-        <thead>
-        <th>年利率</th>
-        <th>期数</th>
-        <th>当期本金(元)</th>
-        <th>当期利息(元)</th>
-        <th>当期总额(元)</th>
-        <th>当期未还本金(元)</th>
-        <th>当期应还款日</th>
-        </thead>
-        <tbody v-for="(item,index) in result" :key="index">
-        <td>{{item.repayRate}}</td>
-        <td>{{item.repayTerm}}</td>
-        <td>{{item.repayPrincipal}}</td>
-        <td>{{item.repayFee}}</td>
-        <td>{{item.repayTotal}}</td>
-        <td>{{item.notRepayPrincipal}}</td>
-        <td>{{item.repayDate}}</td>
-        </tbody>
-    </table>
+    <template v-if="show">
+        <table border="1" cellspacing="0" cellpadding="0">
+            <thead>
+            <th>年利率</th>
+            <th>期数</th>
+            <th>当期本金(元)</th>
+            <th>当期利息(元)</th>
+            <th>当期总额(元)</th>
+            <th>当期未还本金(元)</th>
+            <th>当期应还款日</th>
+            </thead>
+            <tbody v-for="(item,index) in result" :key="index">
+            <td>{{item.repayRate}}</td>
+            <td>{{item.repayTerm}}</td>
+            <td>{{item.repayPrincipal}}</td>
+            <td>{{item.repayFee}}</td>
+            <td>{{item.repayTotal}}</td>
+            <td>{{item.notRepayPrincipal}}</td>
+            <td>{{item.repayDate}}</td>
+            </tbody>
+        </table>
+    </template>
 </div>
 </body>
-<link rel="stylesheet" th:href="@{/settle.css}">
 <script type="text/javascript" th:src="@{/settle.js}"></script>
 </html>
