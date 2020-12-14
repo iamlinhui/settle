@@ -275,8 +275,8 @@ public class SpringTest extends BaseTest {
         StandardEvaluationContext context = calculateContext.newContext();
 
         context.setVariable("YR", new SettleDecimal("0.068")); //年华利率
-        context.setVariable("LA", new SettleDecimal("3000")); // 借款金额
-        context.setVariable("LM", new SettleDecimal("3")); // 借款期数
+        context.setVariable("LA", new SettleDecimal("1165")); // 借款金额
+        context.setVariable("LM", new SettleDecimal("24")); // 借款期数
 
         context.setVariable("RS", new Precision(12, RoundingMode.HALF_UP)); //结果精度
         context.setVariable("PR", new Precision(8, RoundingMode.HALF_UP)); //过程精度

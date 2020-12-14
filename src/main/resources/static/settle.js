@@ -92,7 +92,7 @@ new Vue({
                     "firstRepayDateRule": "#MONTH_ADD_FUNCTION(#PD,#CLM)",
                     "firstStartDateRule": "#PD",
                     "firstTotalAmountRule": "#FPA.add(#FIA)",
-                    "monthAmountRule": "#LA.multiply(#MR).multiply(#MR.add(1).pow(#LM)).divide(#MR.add(1).pow(#LM).subtract(1),@precision.init(5,'HALF_UP')).precision(@precision.init(4,'HALF_UP')).precision(@precision.init(3,'HALF_UP')).precision(@precision.init(2,'HALF_UP'))"
+                    "monthAmountRule": "#LA.multiply(#MR).multiply(#MR.add(1).pow(#LM)).divide(#MR.add(1).pow(#LM).subtract(1),@precision.init(3,'HALF_UP')).precision(#RP)"
                 },
                 "middleInterestRule": {
                     "middleInterestAmountRule": "#NPA.multiply(#YR).divide(360,@precision.init(5,'HALF_UP')).multiply(30,#RP)",
