@@ -26,6 +26,8 @@ public class MiddleInterestRule extends AbstractInterestRule {
     @ContextRule(value = "NPA", desc = "未还本金", clazz = SettleDecimal.class)
     private String notPrincipalAmountRule = "#NPA.subtract(#MPA).max(0,#RP)";
 
+    @ContextRule(value = "MDC", desc = "中间期天数", clazz = SettleDecimal.class)
+    private String betweenDaysRule = "#DAYS_FUNCTION(#MONTH_ADD_FUNCTION(#MRD,-1),#MRD)";
 
     @ContextRule(value = "CRD", desc = "当前期还款日", clazz = Date.class)
     private String currentRepayDateRule = "#MRD";
@@ -38,4 +40,7 @@ public class MiddleInterestRule extends AbstractInterestRule {
 
     @ContextRule(value = "CTA", desc = "当前期总额", clazz = SettleDecimal.class)
     private String currentTotalAmountRule = "#MTA";
+
+    @ContextRule(value = "CDC", desc = "当前期天数", clazz = SettleDecimal.class)
+    private String currentBetweenDaysRule = "#MDC";
 }

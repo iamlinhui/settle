@@ -1,9 +1,9 @@
 package cn.promptness.settle.controller;
 
-import cn.promptness.settle.vo.SettleVo;
 import cn.promptness.settle.domain.CapitalExpectRepay;
 import cn.promptness.settle.service.ExpectRepayService;
 import cn.promptness.settle.vo.CapitalExpectRepayVo;
+import cn.promptness.settle.vo.SettleVo;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +51,7 @@ public class IndexController {
             capitalExpectRepayVo.setRepayPrincipal(nullToString(capitalExpectRepay.getRepayPrincipal()));
             capitalExpectRepayVo.setRepayFee(nullToString(capitalExpectRepay.getRepayFee()));
             capitalExpectRepayVo.setNotRepayPrincipal(nullToString(capitalExpectRepay.getNotRepayPrincipal()));
-
+            capitalExpectRepayVo.setBetweenDays(nullToString(capitalExpectRepay.getBetweenDays()));
             result.add(capitalExpectRepayVo);
         }
 

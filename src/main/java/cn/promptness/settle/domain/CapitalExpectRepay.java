@@ -46,6 +46,13 @@ public class CapitalExpectRepay extends RateInfo {
     @ContextValue("CIA")
     private SettleDecimal repayFee;
 
+
+    /**
+     * 间隔天数
+     */
+    @ContextValue("CDC")
+    private SettleDecimal betweenDays;
+
     /**
      * 未还本金
      */

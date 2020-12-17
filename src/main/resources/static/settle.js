@@ -12,7 +12,8 @@ new Vue({
                 "repayTotal": "",
                 "repayPrincipal": "",
                 "repayFee": "",
-                "notRepayPrincipal": ""
+                "notRepayPrincipal": "",
+                "betweenDays": ""
             }],
             payOrder: {
                 loanTerm: 36,

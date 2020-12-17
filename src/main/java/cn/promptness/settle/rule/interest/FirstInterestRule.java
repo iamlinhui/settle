@@ -30,6 +30,9 @@ public class FirstInterestRule extends AbstractInterestRule {
     @ContextRule(value = "NPA", desc = "未还本金", clazz = SettleDecimal.class)
     private String notPrincipalAmountRule = "#LA.subtract(#FPA).max(0,#RP)";
 
+    @ContextRule(value = "FDC", desc = "首期天数", clazz = SettleDecimal.class)
+    private String betweenDaysRule = "#DAYS_FUNCTION(#FSD,#FRD)";
+
 
     @ContextRule(value = "CRD", desc = "当前期还款日", clazz = Date.class)
     private String currentRepayDateRule = "#FRD";
@@ -42,4 +45,7 @@ public class FirstInterestRule extends AbstractInterestRule {
 
     @ContextRule(value = "CTA", desc = "当前期总额", clazz = SettleDecimal.class)
     private String currentTotalAmountRule = "#FTA";
+
+    @ContextRule(value = "CDC", desc = "当前期天数", clazz = SettleDecimal.class)
+    private String currentBetweenDaysRule = "#FDC";
 }

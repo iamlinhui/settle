@@ -65,6 +65,7 @@
             <th>当期总额(元)</th>
             <th>当期未还本金(元)</th>
             <th>当期应还款日</th>
+            <th>间隔天数</th>
             </thead>
             <tbody v-for="(item,index) in result" :key="index">
             <td>{{item.repayRate}}</td>
@@ -74,6 +75,7 @@
             <td>{{item.repayTotal}}</td>
             <td>{{item.notRepayPrincipal}}</td>
             <td>{{item.repayDate}}</td>
+            <td>{{item.betweenDays}}</td>
             </tbody>
         </table>
     </template>

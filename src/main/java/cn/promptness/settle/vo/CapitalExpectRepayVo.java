@@ -64,4 +64,10 @@ public class CapitalExpectRepayVo {
      */
     private String notRepayPrincipal;
 
+
+    /**
+     * 间隔天数
+     */
+    private String betweenDays;
+
 }
