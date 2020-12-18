@@ -55,6 +55,22 @@
         <a class="btn btn-light btn-block" v-on:click="settle">生成还款计划</a>
     </div>
     <hr/>
+    <!-- 显示区 -->
+    <div id="loggingText" contenteditable="true"
+         style="width:100%;height: 200px;background-color: ghostwhite; overflow: auto;"></div>
+
+    <!-- 操作栏 -->
+    <div style="text-align: center;">
+        <button class="btn btn-secondary" onclick="$('#loggingText').text('')">清屏</button>
+        <button class="btn btn-secondary"
+                onclick="$('#loggingText').animate({scrollTop:$('#loggingText')[0].scrollHeight});">滚动至底部
+        </button>
+        <button class="btn btn-secondary"
+                onclick="if(window.loggingAutoBottom){$(this).text('开启自动滚动');}else{$(this).text('关闭自动滚动');};window.loggingAutoBottom = !window.loggingAutoBottom">
+            开启自动滚动
+        </button>
+    </div>
+    <hr/>
     <template v-if="show">
         <table border="1" cellspacing="0" cellpadding="0">
             <thead>
@@ -82,4 +98,47 @@
 </div>
 </body>
 <script type="text/javascript" th:src="@{/settle.js}"></script>
+<script th:inline="javascript">
+    //websocket对象
+    let websocket = null;
+
+    //判断当前浏览器是否支持WebSocket
+    if ('WebSocket' in window) {
+        websocket = new WebSocket("ws://127.0.0.1:8080/websocket/logging");
+    } else {
+        console.error("不支持WebSocket");
+    }
+
+    //连接发生错误的回调方法
+    websocket.onerror = function (e) {
+        console.error("WebSocket连接发生错误");
+    };
+
+    //连接成功建立的回调方法
+    websocket.onopen = function () {
+        console.log("WebSocket连接成功")
+    };
+
+    //接收到消息的回调方法
+    websocket.onmessage = function (event) {
+        //追加
+        if (event.data) {
+
+            //日志内容
+            let $loggingText = $("#loggingText");
+            $loggingText.append(event.data);
+
+            //是否开启自动底部
+            if (window.loggingAutoBottom) {
+                //滚动条自动到最底部
+                $loggingText.scrollTop($loggingText[0].scrollHeight);
+            }
+        }
+    }
+
+    //连接关闭的回调方法
+    websocket.onclose = function () {
+        console.log("WebSocket连接关闭")
+    };
+</script>
 </html>

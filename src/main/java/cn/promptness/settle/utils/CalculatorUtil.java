@@ -10,6 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.expression.Expression;
+import org.springframework.expression.spel.SpelNode;
+import org.springframework.expression.spel.ast.MethodReference;
+import org.springframework.expression.spel.ast.VariableReference;
+import org.springframework.expression.spel.standard.SpelExpression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.util.ReflectionUtils;
@@ -17,8 +21,8 @@ import org.springframework.util.ReflectionUtils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.List;
-import java.util.Objects;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -73,9 +77,8 @@ public class CalculatorUtil {
                 ContextRule annotation = field.getAnnotation(ContextRule.class);
                 Object ruleObj = ReflectionUtils.getField(field, rule);
                 if (ruleObj != null) {
-                    Object parse = CalculatorUtil.parseRule((String) ruleObj, annotation.clazz(), context);
+                    Object parse = CalculatorUtil.parseRule((String) ruleObj, annotation.clazz(), context, annotation);
                     context.setVariable(annotation.value(), parse);
-                    log.debug("[{}] {}={} ==> {}", annotation.desc(), annotation.value(), ruleObj, parse);
                 }
                 continue;
             }
@@ -88,6 +91,69 @@ public class CalculatorUtil {
             }
         }
     }
+
+    public static <T> T parseRule(String rule, Class<T> clazz, StandardEvaluationContext context, ContextRule annotation) {
+        Expression expression = EXPRESSION_PARSER.parseExpression(rule);
+
+        String des = ((SpelExpression) expression).toStringAST();
+
+        SpelNode spelNode = ((SpelExpression) expression).getAST();
+
+        Queue<SpelNode> queue = new ArrayDeque<>();
+        queue.add(spelNode);
+        while (!queue.isEmpty()) {
+            SpelNode pollNode = queue.poll();
+
+            if (pollNode instanceof VariableReference) {
+                VariableReference variableReference = (VariableReference) pollNode;
+                String variable = variableReference.toStringAST();
+
+                Object value = EXPRESSION_PARSER.parseExpression(variable).getValue(context);
+                if (value instanceof Date) {
+                    des = des.replaceAll(variable, Objects.requireNonNull(new SimpleDateFormat("yyyy-MM-dd").format((Date) value)));
+                } else {
+                    des = des.replaceAll(variable, Objects.requireNonNull(value).toString());
+                }
+
+
+            }
+            if (pollNode instanceof MethodReference) {
+                String method = ((MethodReference) pollNode).getName();
+                switch (method) {
+                    case "subtract":
+                        des = des.replaceAll("\\.subtract", "-");
+                        break;
+                    case "multiply":
+                        des = des.replaceAll("\\.multiply", "x");
+                        break;
+                    case "add":
+                        des = des.replaceAll("\\.add", "+");
+                        break;
+                    case "divide":
+                        des = des.replaceAll("\\.divide", "/");
+                        break;
+                    case "pow":
+                        des = des.replaceAll("\\.pow", "^");
+                        break;
+                    default:
+                }
+            }
+
+            for (int i = 0; i < pollNode.getChildCount(); i++) {
+                queue.add(pollNode.getChild(i));
+            }
+        }
+
+
+        T value = expression.getValue(context, clazz);
+
+        if (!annotation.value().startsWith("N") && !annotation.value().startsWith("C") && annotation.value().endsWith("A")) {
+            log.debug("| [{}] {} = {}", annotation.desc(), des, value);
+        }
+
+        return value;
+    }
+
 
     public static <T> T parseRule(String rule, Class<T> clazz, StandardEvaluationContext context) {
         Expression expression = EXPRESSION_PARSER.parseExpression(rule);

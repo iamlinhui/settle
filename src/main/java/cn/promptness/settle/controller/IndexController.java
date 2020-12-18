@@ -32,11 +32,11 @@ public class IndexController {
     @ResponseBody
     public List<CapitalExpectRepayVo> settle(@RequestBody SettleVo settleVo) {
 
-        StopWatch stopWatch = new StopWatch("计算还款计划");
-        stopWatch.start();
+//        StopWatch stopWatch = new StopWatch("计算还款计划");
+//        stopWatch.start();
         List<CapitalExpectRepay> capitalExpectRepayList = expectRepayService.listCapitalExpectRepay(settleVo.getPayOrder(), settleVo.getRule());
-        stopWatch.stop();
-        log.debug(stopWatch.toString());
+        //stopWatch.stop();
+        //log.debug(stopWatch.toString());
 
         List<CapitalExpectRepayVo> result = Lists.newArrayList();
         for (CapitalExpectRepay capitalExpectRepay : capitalExpectRepayList) {

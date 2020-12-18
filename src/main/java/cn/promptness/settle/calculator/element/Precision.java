@@ -42,7 +42,10 @@ public class Precision {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
+
+        return roundingMode.name() + "保留" + scale + "小数";
+
+//        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
     }
 
 
