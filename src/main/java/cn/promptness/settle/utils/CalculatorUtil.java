@@ -148,7 +148,9 @@ public class CalculatorUtil {
         T value = expression.getValue(context, clazz);
 
         if (!annotation.value().startsWith("N") && !annotation.value().startsWith("C") && annotation.value().endsWith("A")) {
-            log.debug("| [{}] {} = {}", annotation.desc(), des, value);
+            // 当前期数
+            Object clm = EXPRESSION_PARSER.parseExpression("#CLM").getValue(context);
+            log.debug("|第{}期 [{}] {} = {}", clm, annotation.desc(), des, value);
         }
 
         return value;

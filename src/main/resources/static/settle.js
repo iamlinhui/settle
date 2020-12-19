@@ -3,6 +3,7 @@ new Vue({
     data() {
         return {
             show: false,
+            logger: true,
             choose: 1,
             result: [{
                 "repayRate": "",
@@ -162,6 +163,9 @@ new Vue({
                 this.show = false
                 this.close(index);
             })
+        },
+        logging() {
+            this.logger = !this.logger
         }
     }
 });
