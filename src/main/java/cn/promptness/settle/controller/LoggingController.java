@@ -35,8 +35,8 @@ public class LoggingController {
      * 任务分配线程池
      */
     private static final ExecutorService TASK_THREAD_POOL = new ThreadPoolExecutor(
-            3, 10, 5L, TimeUnit.SECONDS,
-            new ArrayBlockingQueue<>(50),
+            50, 100, 5L, TimeUnit.SECONDS,
+            new ArrayBlockingQueue<>(100),
             new ThreadPoolExecutor.CallerRunsPolicy()
     );
 

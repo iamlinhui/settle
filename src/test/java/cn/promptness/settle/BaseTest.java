@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = SettleApplication.class)
+@SpringBootTest(classes = SettleApplication.class,webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class BaseTest {
 
 

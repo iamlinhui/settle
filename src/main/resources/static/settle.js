@@ -3,7 +3,7 @@ new Vue({
     data() {
         return {
             show: false,
-            logger: true,
+            logger: false,
             choose: 1,
             result: [{
                 "repayRate": "",
