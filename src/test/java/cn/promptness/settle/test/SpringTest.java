@@ -288,4 +288,16 @@ public class SpringTest extends BaseTest {
 
         System.out.println(CalculatorUtil.parseRule(ma, SettleDecimal.class, context));
     }
+
+
+    @Test
+    public void testAdd() {
+        BigDecimal add = new BigDecimal("0.1").add(new BigDecimal("0.2"));
+        System.out.println(add);
+
+        StandardEvaluationContext context = calculateContext.newContext();
+
+        String ma = "#NUM(0.1) + #NUM(0.2)";
+        System.out.println(CalculatorUtil.parseRule(ma, SettleDecimal.class, context));
+    }
 }
