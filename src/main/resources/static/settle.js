@@ -110,7 +110,55 @@ new Vue({
                     "lastTotalAmountRule": "#LPA.add(#LIA)",
                     "monthAmountRule": "#MA"
                 }
-            }
+            },
+            baseInterestBX: {
+                "firstInterestRule": {
+                    "firstInterestAmountRule": "#LA.multiply(#DAYS_FUNCTION(#FSD,#FRD).multiply(#DR),#RP)",
+                    "firstPrincipalAmountRule": "#MA.subtract(#FIA,#RP)",
+                    "firstRepayDateRule": "#FRD_FUNCTION(#RDN,#BDN,#PD)",
+                    "firstStartDateRule": "#PD",
+                    "firstTotalAmountRule": "#FPA.add(#FIA)",
+                    "monthAmountRule": "#LA.multiply(#MR).multiply(#MR.add(1).pow(#LM)).divide(#MR.add(1).pow(#LM).subtract(1),#RP)"
+                },
+                "middleInterestRule": {
+                    "middleInterestAmountRule": "#NPA.multiply(#YR).multiply(#DAYS_FUNCTION(#MONTH_ADD_FUNCTION(#MRD,-1),#MRD)).divide(360,#PP).precision(#RP)",
+                    "middlePrincipalAmountRule": "#NPA > 0 ? #MA.subtract(#MIA,#RP) : #NPA",
+                    "middleRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#CLM.subtract(1))",
+                    "middleTotalAmountRule": "#MPA.add(#MIA)",
+                    "monthAmountRule": "#MA"
+                },
+                "lastInterestRule": {
+                    "lastInterestAmountRule": "#NPA.multiply(#YR).multiply(#MRD,#LRD)).divide(360,#PP).precision(#RP)",
+                    "lastPrincipalAmountRule": "#NPA",
+                    "lastRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#LM.subtract(1))",
+                    "lastTotalAmountRule": "#LPA.add(#LIA)",
+                    "monthAmountRule": "#MA"
+                }
+            },
+            baseInterestSN: {
+                "firstInterestRule": {
+                    "firstInterestAmountRule": "#LA.multiply(#MR,#RP)",
+                    "firstPrincipalAmountRule": "#MA.subtract(#LA.multiply(#MR),#RP)",
+                    "firstRepayDateRule": "#FRD_FUNCTION(#RDN,#BDN,#PD)",
+                    "firstStartDateRule": "#PD",
+                    "firstTotalAmountRule": "#FPA.add(#FIA)",
+                    "monthAmountRule": "#LA.multiply(#MR).multiply(#MR.add(1).pow(#LM)).divide(#MR.add(1).pow(#LM).subtract(1),#RP)"
+                },
+                "middleInterestRule": {
+                    "middleInterestAmountRule": "#NPA.multiply(#MR,#RP)",
+                    "middlePrincipalAmountRule": "#NPA > 0 ? #MA.subtract(#NPA.multiply(#MR),#RP) : #NPA",
+                    "middleRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#CLM.subtract(1))",
+                    "middleTotalAmountRule": "#MPA.add(#MIA)",
+                    "monthAmountRule": "#MA"
+                },
+                "lastInterestRule": {
+                    "lastInterestAmountRule": "#NPA.multiply(#MR,#RP)",
+                    "lastPrincipalAmountRule": "#NPA",
+                    "lastRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#LM.subtract(1))",
+                    "lastTotalAmountRule": "#LPA.add(#LIA)",
+                    "monthAmountRule": "#MA"
+                }
+            },
         }
     },
     methods: {
@@ -152,7 +200,7 @@ new Vue({
                 payOrder: this.payOrder,
                 rule: {
                     baseInfoRule: this.baseInfo,
-                    baseInterestRule: this.choose === 1 ? this.baseInterestEI : this.choose === 2 ? this.baseInterestEP : this.baseInterestGS
+                    baseInterestRule: select(this)
                 }
             }).then((response) => {
                 this.result = response.data
@@ -169,3 +217,19 @@ new Vue({
         }
     }
 });
+function select(data) {
+    switch (data.choose) {
+        case 1:
+            return data.baseInterestEI;
+        case 2:
+            return data.baseInterestEP;
+        case 3:
+            return data.baseInterestGS;
+        case 4:
+            return data.baseInterestBX;
+        case 5:
+            return data.baseInterestSN;
+        default:
+            return data.baseInterestEI;
+    }
+}

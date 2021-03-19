@@ -50,6 +50,8 @@
                 <option v-bind:value="1">等额本息</option>
                 <option v-bind:value="2">等额本金</option>
                 <option v-bind:value="3">甘肃银行</option>
+                <option v-bind:value="4">百信银行</option>
+                <option v-bind:value="5">苏宁银行</option>
             </select>
         </div>
         <a class="btn btn-light btn-block" v-on:click="settle">生成还款计划</a>
@@ -101,7 +103,7 @@
 
     //判断当前浏览器是否支持WebSocket
     if ('WebSocket' in window) {
-        websocket = new WebSocket("ws://settle.promptness.cn/websocket/logging");
+        websocket = new WebSocket("ws://127.0.0.1:8080/websocket/logging");
     } else {
         console.error("不支持WebSocket");
     }
