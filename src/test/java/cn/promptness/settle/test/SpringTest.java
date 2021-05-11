@@ -2,12 +2,13 @@ package cn.promptness.settle.test;
 
 import cn.promptness.settle.BaseTest;
 import cn.promptness.settle.calculator.element.Precision;
+import cn.promptness.settle.calculator.element.SettleDecimal;
 import cn.promptness.settle.calculator.function.DateFunction;
 import cn.promptness.settle.spring.CalculateContext;
 import cn.promptness.settle.utils.CalculatorUtil;
-import cn.promptness.settle.calculator.element.SettleDecimal;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.common.TemplateParserContext;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.util.StopWatch;
 
@@ -287,5 +288,13 @@ public class SpringTest extends BaseTest {
         String ma = "#LA.multiply(#MR).multiply(#MR.add(1).pow(#LM)).divide(#MR.add(1).pow(#LM).subtract(1),#PR).precision(#RS)";
 
         System.out.println(CalculatorUtil.parseRule(ma, SettleDecimal.class, context));
+    }
+
+    @Test
+    public void spring() {
+        StandardEvaluationContext context = calculateContext.newContext();
+        context.setVariable("YR", new SettleDecimal("0.068")); //年华利率
+        TemplateParserContext templateParserContext = new TemplateParserContext("*{", "}");
+        System.out.println(CalculatorUtil.parseRule("*{#YR}", SettleDecimal.class, context, templateParserContext));
     }
 }

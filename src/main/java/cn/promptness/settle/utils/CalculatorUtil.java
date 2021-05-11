@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.expression.Expression;
+import org.springframework.expression.ParserContext;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.util.ReflectionUtils;
@@ -87,6 +88,11 @@ public class CalculatorUtil {
                 }
             }
         }
+    }
+
+    public static <T> T parseRule(String rule, Class<T> clazz, StandardEvaluationContext context, ParserContext parserContext) {
+        Expression expression = EXPRESSION_PARSER.parseExpression(rule, parserContext);
+        return expression.getValue(context, clazz);
     }
 
     public static <T> T parseRule(String rule, Class<T> clazz, StandardEvaluationContext context) {
