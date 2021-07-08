@@ -4,9 +4,12 @@ import cn.promptness.settle.annotation.CalculatorFunction;
 import cn.promptness.settle.calculator.element.SettleDecimal;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author lynn
@@ -15,6 +18,18 @@ import java.util.Date;
  */
 @Component
 public class DateFunction {
+
+    @CalculatorFunction(value = "SUM")
+    public static Number sumList(List<Number> list) {
+        if (CollectionUtils.isEmpty(list)) {
+            return 0L;
+        }
+        BigDecimal sum = BigDecimal.ZERO;
+        for (Number number : list) {
+            sum = sum.add(new BigDecimal(number.toString()));
+        }
+        return sum;
+    }
 
     /**
      * 1. 还款日 <  账单日 <= 放款日  ==>还款日在下下月
