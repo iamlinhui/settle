@@ -4,6 +4,9 @@ new Vue({
         return {
             show: false,
             choose: 1,
+            allPrincipal: 0,
+            allFee: 0,
+            allTotal: 0,
             result: [{
                 "repayRate": "",
                 "mulctRate": "",
@@ -38,100 +41,128 @@ new Vue({
                     "yearRateRule": "0.08"
                 }
             },
-            baseInterestEI: {
-                "firstInterestRule": {
-                    "firstInterestAmountRule": "#LA.multiply(#DAYS_FUNCTION(#FSD,#FRD).multiply(#DR),#RP)",
-                    "firstPrincipalAmountRule": "#MA.subtract(#LA.multiply(#MR),#RP)",
-                    "firstRepayDateRule": "#FRD_FUNCTION(#RDN,#BDN,#PD)",
-                    "firstStartDateRule": "#PD",
-                    "firstTotalAmountRule": "#FPA.add(#FIA)",
-                    "monthAmountRule": "#LA.multiply(#MR).multiply(#MR.add(1).pow(#LM)).divide(#MR.add(1).pow(#LM).subtract(1),#RP)"
+            interest: {
+                1: {
+                    "firstInterestRule": {
+                        "firstInterestAmountRule": "#LA.multiply(#DAYS_FUNCTION(#FSD,#FRD).multiply(#DR),#RP)",
+                        "firstPrincipalAmountRule": "#MA.subtract(#LA.multiply(#MR),#RP)",
+                        "firstRepayDateRule": "#FRD_FUNCTION(#RDN,#BDN,#PD)",
+                        "firstStartDateRule": "#PD",
+                        "firstTotalAmountRule": "#FPA.add(#FIA)",
+                        "monthAmountRule": "#LA.multiply(#MR).multiply(#MR.add(1).pow(#LM)).divide(#MR.add(1).pow(#LM).subtract(1),#RP)"
+                    },
+                    "middleInterestRule": {
+                        "middleInterestAmountRule": "#NPA.multiply(#DAYS_FUNCTION(#PRD,#MRD).multiply(#DR),#RP)",
+                        "middlePrincipalAmountRule": "#NPA > 0 ? #MA.subtract(#MIA,#RP) : #NPA",
+                        "middleRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#CLM.subtract(1))",
+                        "middleTotalAmountRule": "#MPA.add(#MIA)",
+                        "monthAmountRule": "#MA"
+                    },
+                    "lastInterestRule": {
+                        "lastInterestAmountRule": "#NPA.multiply(#DAYS_FUNCTION(#PRD,#LRD).multiply(#DR),#RP)",
+                        "lastPrincipalAmountRule": "#NPA",
+                        "lastRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#LM.subtract(1))",
+                        "lastTotalAmountRule": "#LPA.add(#LIA)",
+                        "monthAmountRule": "#MA"
+                    }
                 },
-                "middleInterestRule": {
-                    "middleInterestAmountRule": "#NPA.multiply(#MR,#RP)",
-                    "middlePrincipalAmountRule": "#NPA > 0 ? #MA.subtract(#NPA.multiply(#MR),#RP) : #NPA",
-                    "middleRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#CLM.subtract(1))",
-                    "middleTotalAmountRule": "#MPA.add(#MIA)",
-                    "monthAmountRule": "#MA"
+                2: {
+                    "firstInterestRule": {
+                        "firstInterestAmountRule": "#LA.multiply(#DAYS_FUNCTION(#FSD,#FRD).multiply(#DR),#RP)",
+                        "firstPrincipalAmountRule": "#MA.subtract(#FIA,#RP)",
+                        "firstRepayDateRule": "#FRD_FUNCTION(#RDN,#BDN,#PD)",
+                        "firstStartDateRule": "#PD",
+                        "firstTotalAmountRule": "#FPA.add(#FIA)",
+                        "monthAmountRule": "#LA.multiply(#MR).multiply(#MR.add(1).pow(#LM)).divide(#MR.add(1).pow(#LM).subtract(1),#RP)"
+                    },
+                    "middleInterestRule": {
+                        "middleInterestAmountRule": "#NPA.multiply(#DAYS_FUNCTION(#PRD,#MRD).multiply(#DR),#RP)",
+                        "middlePrincipalAmountRule": "#NPA > 0 ? #MA.subtract(#MIA,#RP) : #NPA",
+                        "middleRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#CLM.subtract(1))",
+                        "middleTotalAmountRule": "#MPA.add(#MIA)",
+                        "monthAmountRule": "#MA"
+                    },
+                    "lastInterestRule": {
+                        "lastInterestAmountRule": "#NPA.multiply(#DAYS_FUNCTION(#PRD,#LRD).multiply(#DR),#RP)",
+                        "lastPrincipalAmountRule": "#NPA",
+                        "lastRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#LM.subtract(1))",
+                        "lastTotalAmountRule": "#LPA.add(#LIA)",
+                        "monthAmountRule": "#MA"
+                    }
+
                 },
-                "lastInterestRule": {
-                    "lastInterestAmountRule": "#NPA.multiply(#MR,#RP)",
-                    "lastPrincipalAmountRule": "#NPA",
-                    "lastRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#LM.subtract(1))",
-                    "lastTotalAmountRule": "#LPA.add(#LIA)",
-                    "monthAmountRule": "#MA"
-                }
-            },
-            baseInterestEIT: {
-                "firstInterestRule": {
-                    "firstInterestAmountRule": "#LA.multiply(#DAYS_FUNCTION(#FSD,#FRD).multiply(#DR),#RP)",
-                    "firstPrincipalAmountRule": "#MA.subtract(#FIA,#RP)",
-                    "firstRepayDateRule": "#FRD_FUNCTION(#RDN,#BDN,#PD)",
-                    "firstStartDateRule": "#PD",
-                    "firstTotalAmountRule": "#FPA.add(#FIA)",
-                    "monthAmountRule": "#LA.multiply(#MR).multiply(#MR.add(1).pow(#LM)).divide(#MR.add(1).pow(#LM).subtract(1),#RP)"
+                3: {
+                    "firstInterestRule": {
+                        "firstInterestAmountRule": "#LA.multiply(#DAYS_FUNCTION(#FSD,#FRD).multiply(#DR),#RP)",
+                        "firstPrincipalAmountRule": "#MA.subtract(#LA.multiply(#MR),#RP)",
+                        "firstRepayDateRule": "#FRD_FUNCTION(#RDN,#BDN,#PD)",
+                        "firstStartDateRule": "#PD",
+                        "firstTotalAmountRule": "#FPA.add(#FIA)",
+                        "monthAmountRule": "#LA.multiply(#MR).multiply(#MR.add(1).pow(#LM)).divide(#MR.add(1).pow(#LM).subtract(1),#RP)"
+                    },
+                    "middleInterestRule": {
+                        "middleInterestAmountRule": "#NPA.multiply(#MR,#RP)",
+                        "middlePrincipalAmountRule": "#NPA > 0 ? #MA.subtract(#NPA.multiply(#MR),#RP) : #NPA",
+                        "middleRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#CLM.subtract(1))",
+                        "middleTotalAmountRule": "#MPA.add(#MIA)",
+                        "monthAmountRule": "#MA"
+                    },
+                    "lastInterestRule": {
+                        "lastInterestAmountRule": "#NPA.multiply(#MR,#RP)",
+                        "lastPrincipalAmountRule": "#NPA",
+                        "lastRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#LM.subtract(1))",
+                        "lastTotalAmountRule": "#LPA.add(#LIA)",
+                        "monthAmountRule": "#MA"
+                    }
                 },
-                "middleInterestRule": {
-                    "middleInterestAmountRule": "#NPA.multiply(#MR,#RP)",
-                    "middlePrincipalAmountRule": "#NPA > 0 ? #MA.subtract(#NPA.multiply(#MR),#RP) : #NPA",
-                    "middleRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#CLM.subtract(1))",
-                    "middleTotalAmountRule": "#MPA.add(#MIA)",
-                    "monthAmountRule": "#MA"
+                4: {
+                    "firstInterestRule": {
+                        "firstInterestAmountRule": "#LA.multiply(#DAYS_FUNCTION(#FSD,#FRD).multiply(#DR),#RP)",
+                        "firstPrincipalAmountRule": "#MA.subtract(#FIA,#RP)",
+                        "firstRepayDateRule": "#FRD_FUNCTION(#RDN,#BDN,#PD)",
+                        "firstStartDateRule": "#PD",
+                        "firstTotalAmountRule": "#FPA.add(#FIA)",
+                        "monthAmountRule": "#LA.multiply(#MR).multiply(#MR.add(1).pow(#LM)).divide(#MR.add(1).pow(#LM).subtract(1),#RP)"
+                    },
+                    "middleInterestRule": {
+                        "middleInterestAmountRule": "#NPA.multiply(#MR,#RP)",
+                        "middlePrincipalAmountRule": "#NPA > 0 ? #MA.subtract(#NPA.multiply(#MR),#RP) : #NPA",
+                        "middleRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#CLM.subtract(1))",
+                        "middleTotalAmountRule": "#MPA.add(#MIA)",
+                        "monthAmountRule": "#MA"
+                    },
+                    "lastInterestRule": {
+                        "lastInterestAmountRule": "#NPA.multiply(#MR,#RP)",
+                        "lastPrincipalAmountRule": "#NPA",
+                        "lastRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#LM.subtract(1))",
+                        "lastTotalAmountRule": "#LPA.add(#LIA)",
+                        "monthAmountRule": "#MA"
+                    }
+
                 },
-                "lastInterestRule": {
-                    "lastInterestAmountRule": "#NPA.multiply(#MR,#RP)",
-                    "lastPrincipalAmountRule": "#NPA",
-                    "lastRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#LM.subtract(1))",
-                    "lastTotalAmountRule": "#LPA.add(#LIA)",
-                    "monthAmountRule": "#MA"
-                }
-            },
-            baseInterestEP: {
-                "firstInterestRule": {
-                    "firstInterestAmountRule": "#LA.multiply(#DAYS_FUNCTION(#FSD,#FRD).multiply(#DR),#RP)",
-                    "firstPrincipalAmountRule": "#MA",
-                    "firstRepayDateRule": "#FRD_FUNCTION(#RDN,#BDN,#PD)",
-                    "firstStartDateRule": "#PD",
-                    "firstTotalAmountRule": "#FPA.add(#FIA)",
-                    "monthAmountRule": "#LA.divide(#LM,#RP)"
-                },
-                "middleInterestRule": {
-                    "middleInterestAmountRule": "#NPA.multiply(#MR,#RP)",
-                    "middlePrincipalAmountRule": "#MA",
-                    "middleRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#CLM.subtract(1))",
-                    "middleTotalAmountRule": "#MPA.add(#MIA)",
-                    "monthAmountRule": "#MA"
-                },
-                "lastInterestRule": {
-                    "lastInterestAmountRule": "#NPA.multiply(#MR,#RP)",
-                    "lastPrincipalAmountRule": "#NPA",
-                    "lastRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#LM.subtract(1))",
-                    "lastTotalAmountRule": "#LPA.add(#LIA)",
-                    "monthAmountRule": "#MA"
-                }
-            },
-            baseInterestGS: {
-                "firstInterestRule": {
-                    "firstInterestAmountRule": "#LA.multiply(#YR).divide(360,@precision.init(5,'HALF_UP')).multiply(30,#RP)",
-                    "firstPrincipalAmountRule": "#MA.subtract(#FIA,#RP)",
-                    "firstRepayDateRule": "#MONTH_ADD_FUNCTION(#PD,#CLM)",
-                    "firstStartDateRule": "#PD",
-                    "firstTotalAmountRule": "#FPA.add(#FIA)",
-                    "monthAmountRule": "#LA.multiply(#MR).multiply(#MR.add(1).pow(#LM)).divide(#MR.add(1).pow(#LM).subtract(1),@precision.init(3,'HALF_UP')).precision(#RP)"
-                },
-                "middleInterestRule": {
-                    "middleInterestAmountRule": "#NPA.multiply(#YR).divide(360,@precision.init(5,'HALF_UP')).multiply(30,#RP)",
-                    "middlePrincipalAmountRule": "#NPA > 0 ? #MA.subtract(#MIA,#RP) : #NPA",
-                    "middleRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#CLM.subtract(1))",
-                    "middleTotalAmountRule": "#MPA.add(#MIA)",
-                    "monthAmountRule": "#MA"
-                },
-                "lastInterestRule": {
-                    "lastInterestAmountRule": "#NPA.multiply(#YR).divide(360,@precision.init(5,'HALF_UP')).multiply(30,#RP)",
-                    "lastPrincipalAmountRule": "#NPA",
-                    "lastRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#LM.subtract(1))",
-                    "lastTotalAmountRule": "#LPA.add(#LIA)",
-                    "monthAmountRule": "#MA"
+                5: {
+                    "firstInterestRule": {
+                        "firstInterestAmountRule": "#LA.multiply(#DAYS_FUNCTION(#FSD,#FRD).multiply(#DR),#RP)",
+                        "firstPrincipalAmountRule": "#MA",
+                        "firstRepayDateRule": "#FRD_FUNCTION(#RDN,#BDN,#PD)",
+                        "firstStartDateRule": "#PD",
+                        "firstTotalAmountRule": "#FPA.add(#FIA)",
+                        "monthAmountRule": "#LA.divide(#LM,#RP)"
+                    },
+                    "middleInterestRule": {
+                        "middleInterestAmountRule": "#NPA.multiply(#MR,#RP)",
+                        "middlePrincipalAmountRule": "#MA",
+                        "middleRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#CLM.subtract(1))",
+                        "middleTotalAmountRule": "#MPA.add(#MIA)",
+                        "monthAmountRule": "#MA"
+                    },
+                    "lastInterestRule": {
+                        "lastInterestAmountRule": "#NPA.multiply(#MR,#RP)",
+                        "lastPrincipalAmountRule": "#NPA",
+                        "lastRepayDateRule": "#MONTH_ADD_FUNCTION(#FRD,#LM.subtract(1))",
+                        "lastTotalAmountRule": "#LPA.add(#LIA)",
+                        "monthAmountRule": "#MA"
+                    }
                 }
             }
         }
@@ -175,7 +206,7 @@ new Vue({
                 payOrder: this.payOrder,
                 rule: {
                     baseInfoRule: this.baseInfo,
-                    baseInterestRule: this.choose === 1 ? this.baseInterestEI : this.choose === 2 ? this.baseInterestEIT : this.choose === 3 ? this.baseInterestEP : this.baseInterestGS
+                    baseInterestRule: this.interest[this.choose]
                 }
             }).then((response) => {
                 this.result = response.data
@@ -186,6 +217,23 @@ new Vue({
                 this.show = false
                 this.close(index);
             })
+        }
+    },
+    watch: {
+        'result': {
+            handler(val) {
+                this.allPrincipal = 0
+                this.allFee = 0
+                this.allTotal = 0
+                this.result.forEach(item => {
+                    this.allPrincipal += Number(item.repayPrincipal)
+                    this.allFee += Number(item.repayFee)
+                    this.allTotal += Number(item.repayTotal)
+                })
+                this.allPrincipal = this.allPrincipal.toFixed(2)
+                this.allFee = this.allFee.toFixed(2)
+                this.allTotal = this.allTotal.toFixed(2)
+            }
         }
     }
 });

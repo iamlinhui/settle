@@ -47,10 +47,11 @@
         <div class="form-group">
             <label for="choose">还款方式：</label>
             <select class="custom-select" id="choose" v-model="choose">
-                <option v-bind:value="1">等额本息-首期总额不等</option>
-                <option v-bind:value="2">等额本息-首期总额相等</option>
-                <option v-bind:value="3">等额本金</option>
-                <option v-bind:value="4">甘肃银行</option>
+                <option v-bind:value="1">等额本息-按日计息-首期总额不等</option>
+                <option v-bind:value="2">等额本息-按日计息-首期总额相等</option>
+                <option v-bind:value="3">等额本息-按月计息-首期总额不等</option>
+                <option v-bind:value="4">等额本息-按月计息-首期总额相等</option>
+                <option v-bind:value="5">等额本金</option>
             </select>
         </div>
         <a class="btn btn-light btn-block" v-on:click="settle">生成还款计划</a>
@@ -77,6 +78,16 @@
             <td>{{item.notRepayPrincipal}}</td>
             <td>{{item.repayDate}}</td>
             <td>{{item.betweenDays}}</td>
+            </tbody>
+            <tbody>
+                <td>总计</td>
+                <td>/</td>
+                <td>{{allPrincipal}}</td>
+                <td>{{allFee}}</td>
+                <td>{{allTotal}}</td>
+                <td>/</td>
+                <td>/</td>
+                <td>/</td>
             </tbody>
         </table>
     </template>

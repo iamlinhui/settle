@@ -43,4 +43,7 @@ public class MiddleInterestRule extends AbstractInterestRule {
 
     @ContextRule(value = "CDC", desc = "当前期天数", clazz = SettleDecimal.class)
     private String currentBetweenDaysRule = "#MDC";
+
+    @ContextRule(value = "PRD", desc = "前一期还款日", clazz = Date.class)
+    private String preRepayDateRule = "#MRD";
 }

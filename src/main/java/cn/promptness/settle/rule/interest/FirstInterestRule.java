@@ -33,7 +33,6 @@ public class FirstInterestRule extends AbstractInterestRule {
     @ContextRule(value = "FDC", desc = "首期天数", clazz = SettleDecimal.class)
     private String betweenDaysRule = "#DAYS_FUNCTION(#FSD,#FRD)";
 
-
     @ContextRule(value = "CRD", desc = "当前期还款日", clazz = Date.class)
     private String currentRepayDateRule = "#FRD";
 
@@ -48,4 +47,7 @@ public class FirstInterestRule extends AbstractInterestRule {
 
     @ContextRule(value = "CDC", desc = "当前期天数", clazz = SettleDecimal.class)
     private String currentBetweenDaysRule = "#FDC";
+
+    @ContextRule(value = "PRD", desc = "前一期还款日", clazz = Date.class)
+    private String preRepayDateRule = "#FRD";
 }
