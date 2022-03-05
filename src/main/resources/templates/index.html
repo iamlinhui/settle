@@ -6,11 +6,10 @@
     <meta name="Description" content="可高度定制的计算步骤的 还款计划计算解析器"/>
     <meta name="Keywords" content="等额本息 等额本金"/>
     <script th:src="@{/vue.js}"></script>
-    <script th:src="@{/settle.js}"></script>
+    <script th:src="@{/axios.js}"></script>
     <link th:href="@{/bootstrap.css}" rel="stylesheet"/>
     <script th:src="@{/jquery.js}"></script>
-    <script th:src="@{/layer.js}"></script>
-    <link th:href="@{/layer.css}" rel="stylesheet"/>
+    <script th:src="@{/layer/layer.js}"></script>
     <link rel="stylesheet" th:href="@{/settle.css}">
 </head>
 <body>
@@ -80,14 +79,14 @@
             <td>{{item.betweenDays}}</td>
             </tbody>
             <tbody>
-                <td>总计</td>
-                <td>/</td>
-                <td>{{allPrincipal}}</td>
-                <td>{{allFee}}</td>
-                <td>{{allTotal}}</td>
-                <td>/</td>
-                <td>/</td>
-                <td>/</td>
+            <td>总计</td>
+            <td>/</td>
+            <td>{{allPrincipal}}</td>
+            <td>{{allFee}}</td>
+            <td>{{allTotal}}</td>
+            <td>/</td>
+            <td>/</td>
+            <td>/</td>
             </tbody>
         </table>
     </template>
