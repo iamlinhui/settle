@@ -214,8 +214,9 @@ new Vue({
                 layer.close(index);
             }).catch((error) => {
                 console.log(error);
+                // layer.msg(error, {icon: 2});
                 this.show = false
-                this.close(index);
+                layer.close(index);
             })
         }
     },
