@@ -1,5 +1,8 @@
 package cn.promptness.settle.utils;
 
+import cn.holmes.settle.expression.El;
+import cn.holmes.settle.expression.common.context.Context;
+import cn.holmes.settle.expression.common.converter.TypeConverter;
 import cn.promptness.settle.annotation.ContextField;
 import cn.promptness.settle.annotation.ContextRule;
 import cn.promptness.settle.annotation.ContextValue;
@@ -9,10 +12,6 @@ import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.expression.Expression;
-import org.springframework.expression.ParserContext;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.annotation.Annotation;
@@ -33,29 +32,29 @@ public class CalculatorUtil {
 
     private static final Logger log = LoggerFactory.getLogger(CalculatorUtil.class);
 
-    public static void parseFieldToContext(final StandardEvaluationContext context, final Object param) {
+    public static void parseFieldToContext(final Context context, final Object param) {
         ReflectionUtils.doWithFields(param.getClass(), field -> {
             ContextField annotation = choose(field, ContextField.class);
             if (annotation != null) {
                 ReflectionUtils.makeAccessible(field);
                 Object fieldObj = ReflectionUtils.getField(field, param);
-                context.setVariable(annotation.value(), fieldObj);
+                context.set(annotation.value(), fieldObj);
             }
         });
     }
 
-    public static void parseContextToValue(final StandardEvaluationContext context, final Object param) {
+    public static void parseContextToValue(final Context context, final Object param) {
         ReflectionUtils.doWithFields(param.getClass(), field -> {
             ContextValue annotation = choose(field, ContextValue.class);
             if (annotation != null) {
                 ReflectionUtils.makeAccessible(field);
                 String value = annotation.value();
-                ReflectionUtils.setField(field, param, context.lookupVariable(value));
+                ReflectionUtils.setField(field, param, TypeConverter.convert(context.get(value), field.getType()));
             }
         });
     }
 
-    public static void parseRuleToContext(final StandardEvaluationContext context, final AbstractRule rule) {
+    public static void parseRuleToContext(final Context context, final AbstractRule rule) {
 
         final List<Field> fieldList = Lists.newArrayList();
         ReflectionUtils.doWithFields(rule.getClass(), field -> {
@@ -75,7 +74,7 @@ public class CalculatorUtil {
                 Object ruleObj = ReflectionUtils.getField(field, rule);
                 if (ruleObj != null) {
                     Object parse = CalculatorUtil.parseRule((String) ruleObj, annotation.clazz(), context);
-                    context.setVariable(annotation.value(), parse);
+                    context.set(annotation.value(), parse);
                     log.debug("[{}] {}={} ==> {}", annotation.desc(), annotation.value(), ruleObj, parse);
                 }
                 continue;
@@ -90,14 +89,8 @@ public class CalculatorUtil {
         }
     }
 
-    public static <T> T parseRule(String rule, Class<T> clazz, StandardEvaluationContext context, ParserContext parserContext) {
-        Expression expression = EXPRESSION_PARSER.parseExpression(rule, parserContext);
-        return expression.getValue(context, clazz);
-    }
-
-    public static <T> T parseRule(String rule, Class<T> clazz, StandardEvaluationContext context) {
-        Expression expression = EXPRESSION_PARSER.parseExpression(rule);
-        return expression.getValue(context, clazz);
+    public static <T> T parseRule(String rule, Class<T> clazz, Context context) {
+        return El.eval(context, rule, clazz);
     }
 
     private static int orderContextRule(Field one, Field two) {
@@ -116,8 +109,6 @@ public class CalculatorUtil {
         }
         return annotation;
     }
-
-    private static final SpelExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();
 
     private CalculatorUtil() {
     }

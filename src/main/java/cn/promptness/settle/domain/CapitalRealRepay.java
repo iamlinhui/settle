@@ -1,10 +1,10 @@
 package cn.promptness.settle.domain;
 
 import cn.promptness.settle.enums.RepayType;
-import cn.promptness.settle.calculator.element.SettleDecimal;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -18,7 +18,7 @@ public class CapitalRealRepay extends CapitalExpectRepay {
     /**
      * 罚息
      */
-    private SettleDecimal repayMulct;
+    private BigDecimal repayMulct;
 
     /**
      * 还款类型
@@ -34,6 +34,6 @@ public class CapitalRealRepay extends CapitalExpectRepay {
     /**
      * 资金占用费
      */
-    private SettleDecimal repayOccupy;
+    private BigDecimal repayOccupy;
 
 }

@@ -1,11 +1,11 @@
 package cn.promptness.settle.domain;
 
 import cn.promptness.settle.annotation.ContextField;
-import cn.promptness.settle.calculator.element.SettleDecimal;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 
@@ -55,13 +55,13 @@ public class PayOrder {
      * 借款期数
      */
     @ContextField(value = "LM")
-    private SettleDecimal loanTerm;
+    private Integer loanTerm;
 
     /**
      * 借款金额
      */
     @ContextField(value = "LA")
-    private SettleDecimal loanAmount;
+    private BigDecimal loanAmount;
 
     /**
      * 借款日期
@@ -75,26 +75,26 @@ public class PayOrder {
      * 前端利率
      */
     @ContextField(value = "CR")
-    private SettleDecimal cusRate;
+    private BigDecimal cusRate;
 
     /**
      * 前端优惠后利率
      */
     @ContextField(value = "AR")
-    private SettleDecimal annualRate;
+    private BigDecimal annualRate;
 
 
     /**
      * 固定还款日
      */
     @ContextField(value = "RDN")
-    private SettleDecimal fixedRepayDay;
+    private BigDecimal fixedRepayDay;
 
     /**
      * 出账日
      */
     @ContextField(value = "BDN")
-    private SettleDecimal fixedBillDay;
+    private BigDecimal fixedBillDay;
 
     /**
      * 放款申请时间

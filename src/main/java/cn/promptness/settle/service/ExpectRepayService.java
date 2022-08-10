@@ -1,18 +1,16 @@
 package cn.promptness.settle.service;
 
+import cn.holmes.settle.expression.common.Lang;
+import cn.holmes.settle.expression.common.context.Context;
+import cn.promptness.settle.domain.CapitalExpectRepay;
 import cn.promptness.settle.domain.PayOrder;
 import cn.promptness.settle.rule.BaseRuleInfo;
 import cn.promptness.settle.rule.interest.BaseInterestRule;
-import cn.promptness.settle.spring.CalculateContext;
 import cn.promptness.settle.utils.CalculatorUtil;
-import cn.promptness.settle.calculator.element.SettleDecimal;
-import cn.promptness.settle.domain.CapitalExpectRepay;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -24,12 +22,9 @@ import java.util.List;
 @Service
 public class ExpectRepayService {
 
-    @Resource
-    private CalculateContext calculateContext;
-
     public List<CapitalExpectRepay> listCapitalExpectRepay(PayOrder payOrder, BaseRuleInfo baseRuleInfo) {
 
-        StandardEvaluationContext context = calculateContext.newContext();
+        Context context = Lang.context();
 
         // 填充订单信息
         CalculatorUtil.parseFieldToContext(context, payOrder);
@@ -41,10 +36,10 @@ public class ExpectRepayService {
         BaseInterestRule baseInterestRule = baseRuleInfo.getBaseInterestRule();
 
         List<CapitalExpectRepay> capitalExpectRepayList = Lists.newArrayList();
-        int loanTerm = payOrder.getLoanTerm().intValue();
+        int loanTerm = payOrder.getLoanTerm();
         for (int i = 1; i <= loanTerm; i++) {
             // 设置当前期参数
-            context.setVariable("CLM", new SettleDecimal(i));
+            context.set("CLM", i);
 
             CapitalExpectRepay capitalExpectRepay = new CapitalExpectRepay();
 

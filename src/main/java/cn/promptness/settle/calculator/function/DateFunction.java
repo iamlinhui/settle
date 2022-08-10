@@ -1,15 +1,12 @@
 package cn.promptness.settle.calculator.function;
 
+import cn.holmes.settle.expression.common.element.SettleDecimal;
 import cn.promptness.settle.annotation.CalculatorFunction;
-import cn.promptness.settle.calculator.element.SettleDecimal;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
-import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author lynn
@@ -19,38 +16,25 @@ import java.util.List;
 @Component
 public class DateFunction {
 
-    @CalculatorFunction(value = "SUM")
-    public static Number sumList(List<Number> list) {
-        if (CollectionUtils.isEmpty(list)) {
-            return 0L;
-        }
-        BigDecimal sum = BigDecimal.ZERO;
-        for (Number number : list) {
-            sum = sum.add(new BigDecimal(number.toString()));
-        }
-        return sum;
-    }
-
     /**
      * 1. 还款日 <  账单日 <= 放款日  ==>还款日在下下月
      * 2. 还款日 >  账单日  >  放款日  ==>还款日在当月
      * 3. 其他  ==>还款日在下月
      */
     @CalculatorFunction("FRD_FUNCTION")
-    public static Date getFirstRepayDate(Integer repayDay, Integer billDay, Date businessDate) {
-
+    public static Date getFirstRepayDate(SettleDecimal repayDay, SettleDecimal billDay, Date businessDate) {
         Calendar instance = Calendar.getInstance();
         instance.setTime(DateUtils.truncate(businessDate, Calendar.DATE));
 
         int gavinDay = instance.get(Calendar.DATE);
-        instance.set(Calendar.DATE, repayDay);
+        instance.set(Calendar.DATE, repayDay.intValue());
 
-        if (repayDay < billDay && billDay <= gavinDay) {
+        if (repayDay.intValue() < billDay.intValue() && billDay.intValue() <= gavinDay) {
             instance.add(Calendar.MONTH, 2);
             return instance.getTime();
         }
 
-        if (repayDay > billDay && billDay > gavinDay) {
+        if (repayDay.intValue() > billDay.intValue() && billDay.intValue() > gavinDay) {
             return instance.getTime();
         }
 
@@ -68,12 +52,12 @@ public class DateFunction {
     }
 
     @CalculatorFunction("MONTH_ADD_FUNCTION")
-    public static Date addMonths(Date startDate, Integer add) {
-        return DateUtils.addMonths(startDate, add);
+    public static Date addMonths(Date startDate, SettleDecimal add) {
+        return DateUtils.addMonths(startDate, add.intValue());
     }
 
     @CalculatorFunction("DAY_ADD_FUNCTION")
-    public static Date addDays(Date startDate, Integer add) {
-        return DateUtils.addDays(startDate, add);
+    public static Date addDays(Date startDate, SettleDecimal add) {
+        return DateUtils.addDays(startDate, add.intValue());
     }
 }

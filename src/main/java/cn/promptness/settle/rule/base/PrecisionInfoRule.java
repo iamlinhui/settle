@@ -1,7 +1,7 @@
 package cn.promptness.settle.rule.base;
 
+import cn.holmes.settle.expression.common.element.Precision;
 import cn.promptness.settle.annotation.ContextRule;
-import cn.promptness.settle.calculator.element.Precision;
 import cn.promptness.settle.rule.AbstractRule;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

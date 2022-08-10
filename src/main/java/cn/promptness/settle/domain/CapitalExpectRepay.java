@@ -1,11 +1,11 @@
 package cn.promptness.settle.domain;
 
 import cn.promptness.settle.annotation.ContextValue;
-import cn.promptness.settle.calculator.element.SettleDecimal;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -19,7 +19,7 @@ public class CapitalExpectRepay extends RateInfo {
      * 还款期数
      */
     @ContextValue("CLM")
-    private SettleDecimal repayTerm;
+    private Integer repayTerm;
 
     /**
      * 还款日期
@@ -32,31 +32,31 @@ public class CapitalExpectRepay extends RateInfo {
      * 还款总额
      */
     @ContextValue("CTA")
-    private SettleDecimal repayTotal;
+    private BigDecimal repayTotal;
 
     /**
      * 还款本金
      */
     @ContextValue("CPA")
-    private SettleDecimal repayPrincipal;
+    private BigDecimal repayPrincipal;
 
     /**
      * 还款利息
      */
     @ContextValue("CIA")
-    private SettleDecimal repayFee;
+    private BigDecimal repayFee;
 
 
     /**
      * 间隔天数
      */
     @ContextValue("CDC")
-    private SettleDecimal betweenDays;
+    private Integer betweenDays;
 
     /**
      * 未还本金
      */
     @ContextValue("NPA")
-    private SettleDecimal notRepayPrincipal;
+    private BigDecimal notRepayPrincipal;
 
 }

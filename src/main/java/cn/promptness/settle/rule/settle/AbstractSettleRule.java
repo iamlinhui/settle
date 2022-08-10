@@ -3,10 +3,10 @@ package cn.promptness.settle.rule.settle;
 import cn.promptness.settle.annotation.ContextRule;
 import cn.promptness.settle.enums.RepayType;
 import cn.promptness.settle.rule.AbstractRule;
-import cn.promptness.settle.calculator.element.SettleDecimal;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -20,10 +20,10 @@ import java.util.Date;
 @Data
 public abstract class AbstractSettleRule extends AbstractRule {
 
-    @ContextRule(value = "RPA", desc = "实还本金", clazz = SettleDecimal.class, order = 1)
+    @ContextRule(value = "RPA", desc = "实还本金", clazz = BigDecimal.class, order = 1)
     private String realRepayPrincipalAmountRule = "#EPA";
 
-    @ContextRule(value = "RIA", desc = "实还利息", clazz = SettleDecimal.class, order = 1)
+    @ContextRule(value = "RIA", desc = "实还利息", clazz = BigDecimal.class, order = 1)
     private String realRepayInterestAmountRule;
 
     @ContextRule(value = "RRT", desc = "实还类型", clazz = RepayType.class, order = 1)
