@@ -1,7 +1,7 @@
-package cn.promptness.settle.calculator.function;
+package cn.promptness.settle.function;
 
+import cn.holmes.settle.expression.common.annotation.HolmesFunction;
 import cn.holmes.settle.expression.common.element.SettleDecimal;
-import cn.promptness.settle.annotation.CalculatorFunction;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +21,7 @@ public class DateFunction {
      * 2. 还款日 >  账单日  >  放款日  ==>还款日在当月
      * 3. 其他  ==>还款日在下月
      */
-    @CalculatorFunction("FRD_FUNCTION")
+    @HolmesFunction("FRD_FUNCTION")
     public static Date getFirstRepayDate(SettleDecimal repayDay, SettleDecimal billDay, Date businessDate) {
         Calendar instance = Calendar.getInstance();
         instance.setTime(DateUtils.truncate(businessDate, Calendar.DATE));
@@ -42,7 +42,7 @@ public class DateFunction {
         return instance.getTime();
     }
 
-    @CalculatorFunction("DAYS_FUNCTION")
+    @HolmesFunction("DAYS_FUNCTION")
     public static SettleDecimal daysBetween(Date startDate, Date endDate) {
         long timeS = DateUtils.truncate(startDate, Calendar.DATE).getTime();
         long timeE = DateUtils.truncate(endDate, Calendar.DATE).getTime();
@@ -51,12 +51,12 @@ public class DateFunction {
         return new SettleDecimal(String.valueOf(days));
     }
 
-    @CalculatorFunction("MONTH_ADD_FUNCTION")
+    @HolmesFunction("MONTH_ADD_FUNCTION")
     public static Date addMonths(Date startDate, SettleDecimal add) {
         return DateUtils.addMonths(startDate, add.intValue());
     }
 
-    @CalculatorFunction("DAY_ADD_FUNCTION")
+    @HolmesFunction("DAY_ADD_FUNCTION")
     public static Date addDays(Date startDate, SettleDecimal add) {
         return DateUtils.addDays(startDate, add.intValue());
     }

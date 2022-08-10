@@ -21,7 +21,6 @@ public @interface ContextRule {
 
     /**
      * 如果需要注册到计算上下文，则需要填充此属性值
-     *
      * 计算上下文的key eg:YR
      */
     String value() default "";
