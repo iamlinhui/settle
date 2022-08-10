@@ -1,7 +1,6 @@
 package cn.promptness.settle.function;
 
 import cn.holmes.settle.expression.common.annotation.HolmesFunction;
-import cn.holmes.settle.expression.common.element.SettleDecimal;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Component;
 
@@ -22,19 +21,19 @@ public class DateFunction {
      * 3. 其他  ==>还款日在下月
      */
     @HolmesFunction("FRD_FUNCTION")
-    public static Date getFirstRepayDate(SettleDecimal repayDay, SettleDecimal billDay, Date businessDate) {
+    public static Date getFirstRepayDate(Integer repayDay, Integer billDay, Date businessDate) {
         Calendar instance = Calendar.getInstance();
         instance.setTime(DateUtils.truncate(businessDate, Calendar.DATE));
 
         int gavinDay = instance.get(Calendar.DATE);
-        instance.set(Calendar.DATE, repayDay.intValue());
+        instance.set(Calendar.DATE, repayDay);
 
-        if (repayDay.intValue() < billDay.intValue() && billDay.intValue() <= gavinDay) {
+        if (repayDay < billDay && billDay <= gavinDay) {
             instance.add(Calendar.MONTH, 2);
             return instance.getTime();
         }
 
-        if (repayDay.intValue() > billDay.intValue() && billDay.intValue() > gavinDay) {
+        if (repayDay > billDay && billDay > gavinDay) {
             return instance.getTime();
         }
 
@@ -43,21 +42,20 @@ public class DateFunction {
     }
 
     @HolmesFunction("DAYS_FUNCTION")
-    public static SettleDecimal daysBetween(Date startDate, Date endDate) {
+    public static Long daysBetween(Date startDate, Date endDate) {
         long timeS = DateUtils.truncate(startDate, Calendar.DATE).getTime();
         long timeE = DateUtils.truncate(endDate, Calendar.DATE).getTime();
         long between = timeE - timeS;
-        long days = between / (1000 * 3600 * 24);
-        return new SettleDecimal(String.valueOf(days));
+        return between / (1000 * 3600 * 24);
     }
 
     @HolmesFunction("MONTH_ADD_FUNCTION")
-    public static Date addMonths(Date startDate, SettleDecimal add) {
-        return DateUtils.addMonths(startDate, add.intValue());
+    public static Date addMonths(Date startDate, Integer add) {
+        return DateUtils.addMonths(startDate, add);
     }
 
     @HolmesFunction("DAY_ADD_FUNCTION")
-    public static Date addDays(Date startDate, SettleDecimal add) {
-        return DateUtils.addDays(startDate, add.intValue());
+    public static Date addDays(Date startDate, Integer add) {
+        return DateUtils.addDays(startDate, add);
     }
 }
